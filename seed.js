@@ -1,24 +1,31 @@
 const bcrypt = require("bcrypt");
 
-const { createUser } = require("./src/models/user.model");
+const {
+    createUser,
+    findUserByUsername
+} = require("./src/models/user.model");
 
-async function seed() {
-    const username = "admin";
-    const password = "123";
-    const roleId = 1;
-
-    const hashedPassword = await bcrypt.hash(password, 10);
-
-    const existingUser = require("./src/models/user.model").findUserByUsername(username);
+async function createSeedUser(username, password, roleId) {
+    const existingUser = findUserByUsername(username);
 
     if (existingUser) {
-        console.log(`User '${username}' already exists; seed skipped`);
+        console.log(`User '${username}' already exists; skipped`);
         return;
     }
 
+    const hashedPassword = await bcrypt.hash(password, 10);
+
     createUser(username, hashedPassword, roleId);
 
-    console.log("Admin user created");
+    console.log(`User '${username}' created`);
+}
+
+async function seed() {
+    // ADMIN
+    await createSeedUser("admin", "123", 1);
+
+    // STUDENT / USER
+    await createSeedUser("student", "123", 2);
 }
 
 seed();

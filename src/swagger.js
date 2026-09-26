@@ -1,4 +1,5 @@
 const swaggerJSDoc = require("swagger-jsdoc");
+const path = require("path");
 
 const options = {
     definition: {
@@ -17,6 +18,17 @@ const options = {
         ],
 
         components: {
+            schemas: {
+                CourseInput: {
+                    type: "object",
+                    required: ["CourseCode", "CourseName", "Credits"],
+                    properties: {
+                        CourseCode: { type: "string", example: "WEB101" },
+                        CourseName: { type: "string", example: "Web Programming" },
+                        Credits: { type: "integer", minimum: 1, maximum: 10, example: 3 }
+                    }
+                }
+            },
             securitySchemes: {
                 bearerAuth: {
                     type: "http",
@@ -28,10 +40,18 @@ const options = {
     },
 
     apis: [
-        "./src/routes/*.js"
+        path.join(__dirname, "routes", "auth.routes.js"),
+        path.join(__dirname, "routes", "user.routes.js"),
+        path.join(__dirname, "routes", "admin.routes.js"),
+        path.join(__dirname, "routes", "course.routes.js")
     ]
 };
 
 const swaggerSpec = swaggerJSDoc(options);
+
+console.log(
+    "Swagger paths:",
+    Object.keys(swaggerSpec.paths || {})
+);
 
 module.exports = swaggerSpec;

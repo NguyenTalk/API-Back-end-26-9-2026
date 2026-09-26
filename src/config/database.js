@@ -16,6 +16,13 @@ db.exec(`
         password TEXT NOT NULL,
         role_id INTEGER NOT NULL
     );
+
+    CREATE TABLE IF NOT EXISTS courses (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        course_code TEXT UNIQUE NOT NULL,
+        course_name TEXT NOT NULL,
+        credits INTEGER NOT NULL CHECK (credits BETWEEN 1 AND 10)
+    );
 `);
 
 const insertRole = db.prepare(`

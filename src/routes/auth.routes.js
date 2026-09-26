@@ -8,7 +8,6 @@ const router = express.Router();
  * @swagger
  * /auth/login:
  *   post:
- *     operationId: login
  *     summary: Login
  *     description: Authenticate user and return JWT token
  *     tags:
@@ -42,7 +41,6 @@ const router = express.Router();
  *                 token:
  *                   type: string
  *                   description: JWT access token
- *                   example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
  *       400:
  *         description: Username and password are required
  *       401:
