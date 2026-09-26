@@ -1,6 +1,8 @@
 const Database = require("better-sqlite3");
+const path = require("path");
 
-const db = new Database("./database/database.sqlite");
+const dbPath = path.resolve(__dirname, "../../database/database.sqlite");
+const db = new Database(dbPath);
 
 db.exec(`
     CREATE TABLE IF NOT EXISTS roles (

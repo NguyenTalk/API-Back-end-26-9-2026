@@ -5,7 +5,11 @@ const {
 } = require("../models/user.model");
 async function login(req, res) {
     try {
-        const { username, password } = req.body;
+        const { username, password } = req.body || {};
+
+        if (!process.env.JWT_SECRET) {
+            throw new Error("JWT_SECRET is not configured");
+        }
 
         if (!username || !password) {
             return res.status(400).json({

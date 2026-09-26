@@ -1,6 +1,12 @@
 const jwt = require("jsonwebtoken");
 
 function authenticateToken(req, res, next) {
+    if (!process.env.JWT_SECRET) {
+        return res.status(500).json({
+            message: "JWT secret is not configured"
+        });
+    }
+
     const authHeader = req.headers.authorization;
 
     if (!authHeader) {
@@ -11,7 +17,7 @@ function authenticateToken(req, res, next) {
 
     const parts = authHeader.split(" ");
 
-    if (parts.length !== 2 || parts[0] !== "Bearer") {
+    if (parts.length !== 2 || parts[0].toLowerCase() !== "bearer" || !parts[1]) {
         return res.status(401).json({
             message: "Invalid authorization format"
         });

@@ -9,6 +9,13 @@ async function seed() {
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
+    const existingUser = require("./src/models/user.model").findUserByUsername(username);
+
+    if (existingUser) {
+        console.log(`User '${username}' already exists; seed skipped`);
+        return;
+    }
+
     createUser(username, hashedPassword, roleId);
 
     console.log("Admin user created");
